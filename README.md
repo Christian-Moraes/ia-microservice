@@ -43,7 +43,7 @@ docker-compose ps
 ```
 
 ### 4. Acesse a aplicação
-- **API**: http://localhost:8080
+- **API**: http://localhost:8081
 - **Nginx**: http://localhost:8081
 - **PostgreSQL**: localhost:5433
 - **Redis**: localhost:6380
@@ -139,7 +139,7 @@ curl -X POST http://localhost:8080/api/ia/resumo \
   }'
 
 # Teste com histórico personalizado
-curl -X POST http://localhost:8080/api/ia/resumo/historico \
+curl -X POST http://localhost:8081/api/ia/resumo/historico \
   -H "Content-Type: application/json" \
   -d '{
     "historico": [
@@ -158,7 +158,7 @@ curl -X POST http://localhost:8080/api/ia/resumo/historico \
 
 ### Com Postman
 
-1. **URL**: `http://localhost:8080/api/ia/resumo`
+1. **URL**: `http://localhost:8081/api/ia/resumo`
 2. **Method**: `POST`
 3. **Headers**: `Content-Type: application/json`
 4. **Body** (raw JSON):

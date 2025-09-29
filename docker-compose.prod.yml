@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ia-microservice-app-prod
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - ia-network
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_KEY=${APP_KEY}
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=ia_microservice
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - IA_PROVIDER=${IA_PROVIDER:-gemini}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_API_URL=${GEMINI_API_URL}
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
+      - CACHE_DRIVER=file
+      - SESSION_DRIVER=file
+      - QUEUE_CONNECTION=sync
+
+  db:
+    image: postgres:15-alpine
+    container_name: ia-microservice-db-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ia_microservice
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ia-network
+    ports:
+      - "5432:5432"
+
+  nginx:
+    image: nginx:alpine
+    container_name: ia-microservice-nginx-prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - ia-network
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  ia-network:
+    driver: bridge
