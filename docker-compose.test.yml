@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: ia-microservice-test
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    environment:
+      - APP_ENV=testing
+      - APP_DEBUG=true
+      - APP_KEY=base64:testing-key-for-jenkins-pipeline
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=:memory:
+      - CACHE_DRIVER=array
+      - SESSION_DRIVER=array
+      - QUEUE_CONNECTION=sync
+      - IA_PROVIDER=mock
+      - GEMINI_API_KEY=test-key
+      - GEMINI_API_URL=test-url
+      - PERPLEXITY_API_KEY=test-key
+    command: >
+      bash -c "
+        php artisan key:generate &&
+        php artisan config:clear &&
+        php artisan cache:clear &&
+        php artisan test --verbose
+      "
+
+  db:
+    image: postgres:15-alpine
+    container_name: ia-microservice-test-db
+    environment:
+      POSTGRES_DB: ia_microservice_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  default:
+    driver: bridge
+

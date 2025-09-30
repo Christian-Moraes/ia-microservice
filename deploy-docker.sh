@@ -69,3 +69,5 @@ print_status "Comandos úteis:"
 echo "  - Ver logs: docker-compose -f docker-compose.prod.yml logs -f"
 echo "  - Parar: docker-compose -f docker-compose.prod.yml down"
 echo "  - Reiniciar: docker-compose -f docker-compose.prod.yml restart"
+
+

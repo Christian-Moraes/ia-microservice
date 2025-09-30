@@ -63,3 +63,5 @@ echo "2. Faça upload do projeto para /home/ubuntu/ia-microservice"
 echo "3. Execute: cd /home/ubuntu/ia-microservice && ./deploy-docker.sh"
 echo ""
 print_status "Servidor Docker pronto para receber o projeto! 🐳🎉"
+
+

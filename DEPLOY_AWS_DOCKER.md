@@ -381,3 +381,5 @@ docker-compose -f docker-compose.prod.yml exec -T db psql -U postgres ia_microse
 ✅ **Zero configuração** - Tudo containerizado
 
 **Seu projeto estará rodando em produção na AWS com Docker! 🐳🚀**
+
+

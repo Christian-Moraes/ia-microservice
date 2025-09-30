@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\IA\ResumoController;
 use App\Http\Controllers\IA\ResumoExternoController;
+use App\Http\Controllers\IA\VeterinarioExternoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,13 @@ Route::prefix('ia')->middleware('api')->group(function () {
 
 // Rotas da API Externa (para clientes enviarem dados diretamente)
 Route::prefix('externo')->middleware('api')->group(function () {
+    // API Médica
     Route::post('/resumo', [ResumoExternoController::class, 'gerarResumoExterno'])->withoutMiddleware('throttle:api');
     Route::post('/resumo/validar', [ResumoExternoController::class, 'validarDados'])->withoutMiddleware('throttle:api');
     Route::get('/resumo/documentacao', [ResumoExternoController::class, 'documentacao']);
+    
+    // API Veterinária
+    Route::post('/veterinario/resumo', [VeterinarioExternoController::class, 'gerarResumoVeterinario'])->withoutMiddleware('throttle:api');
+    Route::post('/veterinario/resumo/validar', [VeterinarioExternoController::class, 'validarDados'])->withoutMiddleware('throttle:api');
+    Route::get('/veterinario/resumo/documentacao', [VeterinarioExternoController::class, 'documentacao']);
 });
