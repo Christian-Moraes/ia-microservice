@@ -21,7 +21,7 @@ Microserviço independente para geração de resumos médicos usando diferentes 
 
 ### 1. Clone e configure
 ```bash
-cd /home/christian/Documentos/ia-microservice
+git clone
 ```
 
 ### 2. Configure as variáveis de ambiente
